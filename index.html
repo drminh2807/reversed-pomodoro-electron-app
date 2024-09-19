@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            display: flex;
+            margin: 0;
+            padding: 5px;
+            font-family: Arial, sans-serif;
+        }
+        button {
+            margin-right: 5px;
+        }
+        input {
+            flex-grow: 1;
+            margin-left: 5px;
+        }
+    </style>
+</head>
+<body>
+    <button id="back">Back</button>
+    <button id="forward">Forward</button>
+    <button id="reload">Reload</button>
+    <input type="text" id="url" placeholder="Enter URL">
+    <script>
+        const urlInput = document.getElementById('url');
+        
+        document.getElementById('back').addEventListener('click', () => {
+            window.electronAPI.goBack();
+        });
+        
+        document.getElementById('forward').addEventListener('click', () => {
+            window.electronAPI.goForward();
+        });
+        
+        document.getElementById('reload').addEventListener('click', () => {
+            window.electronAPI.reload();
+        });
+        
+        urlInput.addEventListener('keyup', (event) => {
+            if (event.key === 'Enter') {
+                window.electronAPI.navigate(event.target.value);
+            }
+        });
+
+        window.addEventListener('message', (event) => {
+            if (event.data.type === 'update-url') {
+                urlInput.value = event.data.url;
+            }
+        });
+    </script>
+</body>
+</html>
